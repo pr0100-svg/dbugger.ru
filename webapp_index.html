@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Постановка задачи</h1>
+        <form id="taskForm">
+            <input type="text" id="taskTitle" placeholder="Заголовок задачи" required>
+            <textarea id="taskDescription" placeholder="Описание задачи" rows="4" required></textarea>
+            <button type="submit">Отправить задачу</button>
+        </form>
+        <p id="responseMessage"></p>
+    </div>
+
+    <script>
+        const form = document.getElementById('taskForm');
+        const responseMessage = document.getElementById('responseMessage');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const taskTitle = document.getElementById('taskTitle').value;
+            const taskDescription = document.getElementById('taskDescription').value;
+
+            // Отправка данных в бота
+            try {
+                const response = await fetch('https://ваш-сервер.com/submit-task', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ title: taskTitle, description: taskDescription }),
+                });
+
+                const result = await response.json();
+                responseMessage.textContent = result.message;
+            } catch (error) {
+                responseMessage.textContent = 'Ошибка при отправке задачи.';
+            }
+        });
+    </script>
+</body>
+</html>
